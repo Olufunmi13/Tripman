@@ -1,9 +1,9 @@
 'use client'
 import React, { useState } from "react";
-import { Button, TextInput, rem, NativeSelect } from "@mantine/core";
+// import { Button, TextInput, rem, NativeSelect } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { DatePickerInput } from '@mantine/dates';
-import { Calendar } from "tabler-icons-react";
+// import { Calendar } from "tabler-icons-react";
 
 const data = [
     { value: 'eur', label: '🇪🇺 EUR' },
@@ -14,35 +14,25 @@ const data = [
     { value: 'ngn', label: 'NG NGN' },
   ];
 
-export default function Form() {
-  const [value] = useState<Date | null>(null);
-  const icon = (
-    <Calendar style={{ width: rem(18), height: rem(18) }} strokeWidth={1.5} />
-  );
-  
-  const select = (
-    <NativeSelect
-      data={data}
-      leftSectionWidth={24}
-      styles={{
-        input: {
-          fontWeight: 400,
-          borderTopLeftRadius: 0,
-          borderBottomLeftRadius: 0,
-          width: rem(92),
-          marginleft: rem(-3),
-        },
-      }}
-    />
-  );
+interface FormValues {
+  trip: string;
+  startDate: Date | null;
+  endDate: Date | null;
+  budget: number | '';
+}
 
-  const form = useForm({
-    mode: "uncontrolled",
+
+export default function Form() {
+  
+
+  
+  const form = useForm<FormValues>({
+    // mode: "uncontrolled",
     initialValues: {
-      trip: "",
-      startDate: "",
-      endDate: "",
-      budget: "",
+      trip: '',
+      startDate: null,
+      endDate: null,
+      budget: '',
     },
 
     validate: {
@@ -57,59 +47,39 @@ export default function Form() {
         const date = new Date(value);
         if (isNaN(date.getTime())) return "Invalid date format";
       },
-      budget: (value) => (value.length < 4 ? 'Set a realistic budget' : '')
+      budget: (value) => (value.toString().length < 4 ? 'Set a realistic budget' : '')
     },
   });
 
+  // Handle form submission
+  const handleSubmit = (values: FormValues) => {
+    console.log(values); 
+  };
+
   return (
-    <form
-      className="mb-2 w-4/5"
-      onSubmit={form.onSubmit((values) => console.log(values))}
-    >
-      <TextInput
-        label="Trip"
-        placeholder="Your Location"
-        key={form.key("trip")}
-        {...form.getInputProps("trip")}
-      />
+  
+      
       <div className="flex flex-row w-full justify-center items-center gap-4">
         <DatePickerInput
-          leftSection={icon}
-          leftSectionPointerEvents="none"
           label="Start date"
-          placeholder="Pick date"
-          value={value}
-          // onChange={setValue}
-          key={form.key("startDate")}
-          {...form.getInputProps("startDate")}
+          placeholder="Start date"
+          value={form.values.startDate}
+          onChange={(date) => form.setFieldValue('startDate', date)}
           className="w-1/2"
         />
+        
         <DatePickerInput
-          leftSection={icon}
-          leftSectionPointerEvents="none"
           label="End date"
-          placeholder="Pick date"
-          value={value}
-          // onChange={setValue}
-          key={form.key("endDate")}
-          {...form.getInputProps("endDate")}
+          value={form.values.endDate}
+          placeholder="End date"
+          onChange={(date) => form.setFieldValue('endDate', date)}
           className="w-1/2"
+          dropdownType="modal"
         />
       </div>
-      <TextInput
-      type="number"
-      placeholder="1000"
-      label="Transfer amount"
-      leftSection={select}
-      leftSectionWidth={92}
-      key={form.key("budget")}
-      {...form.getInputProps("budget")}
-      className="w-full"
-    />
-      <Button type="submit" mt="md" className="w-full bg-[#7159EA]">
-        Create Itinerary
-      </Button>
-    </form>
+      
+      
+
   );
 }
 
