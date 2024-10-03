@@ -1,8 +1,12 @@
+
+
 export interface FormValues {
+    dropZone: File[];
     trip: string;
     startDate: Date | null;
     endDate: Date | null;
     budget: number | '';
+    currency: string;
     itinerary: object
 }
 

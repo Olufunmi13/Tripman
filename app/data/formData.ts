@@ -1,8 +1,9 @@
 export const currencyData = [
-    { value: 'eur', label: '🇪🇺 EUR' },
-    { value: 'usd', label: '🇺🇸 USD' },
-    { value: 'cad', label: '🇨🇦 CAD' },
-    { value: 'gbp', label: '🇬🇧 GBP' },
-    { value: 'aud', label: '🇦🇺 AUD' },
-    { value: 'ngn', label: 'NG NGN' },
+  { value: '$', label: 'USD' }, 
+  { value: '€', label: 'EUR' }, 
+  { value: '£', label: 'GBP' }, 
+  { value: '¥', label: 'JPY' },
+  { value: '₦', label: 'NGN' },
+  { value: 'CA$', label: 'CAD'},
+  { value: 'AU$', label: 'AUD'},
 ];

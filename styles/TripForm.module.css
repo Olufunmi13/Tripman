@@ -1,0 +1,4 @@
+.input:focus{
+    outline: 2px solid #7539d6;
+    outline-offset: -1px;
+}

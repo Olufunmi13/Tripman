@@ -1,9 +1,10 @@
 'use client';
 import React, { useState } from 'react';
 import '@mantine/dates/styles.css';
-import { Button,Group } from '@mantine/core';
+import { Button, Group, Text, Flex } from '@mantine/core';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import {
+  validateDropzone,
   validateTrip,
   validateStartDate,
   validateEndDate,
@@ -13,6 +14,7 @@ import { FormValues } from '@/app/interface';
 import { formatDate } from '@/app/utils/utils';
 import ItineraryForm from '@/app/components/forms/createTripForms/itineraryform';
 import TripForm from './tripForm';
+import { BudgetCard } from './budgetCard';
 
 const steps = ['Step 1: Trip Details', 'Step 2: Itinerary Information'];
 
@@ -22,13 +24,16 @@ export default function CreateTripForm() {
 
   const form: UseFormReturnType<FormValues> = useForm<FormValues>({
     initialValues: {
+      dropZone: [],
       trip: '',
       startDate: null,
       endDate: null,
       budget: '',
+      currency: '',
       itinerary: {},
     },
     validate: {
+      dropZone: validateDropzone,
       trip: validateTrip,
       startDate: validateStartDate,
       endDate: (value) => validateEndDate(value, form.values.startDate),
@@ -36,11 +41,15 @@ export default function CreateTripForm() {
     },
   });
 
+  const handleEditPrevious = () => {
+    setCurrentStep(currentStep - 1);
+  };
+
   const handleNext = () => {
     const errors = form.validate();
-    console.log('errors: ', errors);
 
     if (!errors.hasErrors) {
+      console.log('Form Values:', form.values);
       if (currentStep === 0) {
         setFormData(form.values);
         setCurrentStep(1);
@@ -53,37 +62,44 @@ export default function CreateTripForm() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form
-        className="bg-white p-8 rounded shadow-md w-4/12"
+        className="bg-white p-8 rounded shadow-md w-full sm:w-5/12"
         onSubmit={(e) => {
           e.preventDefault();
           handleNext();
         }}
       >
-        <h2 className="text-xl font-bold mb-4">{steps[currentStep]}</h2>
-        <div className="space-y-4">
+        <div className="w-full sm:space-y-4">
           {currentStep === 0 && <TripForm form={form} />}
-          {currentStep === 1 && ( // Next step
+
+          {currentStep === 1 && (
             <>
               <div>
-                {/* Try create another component that house all the info coming from first page */}
-                <p>{formData?.trip}</p>
-                <p>{formData?.budget}</p>
-                <p>Start Date: {formatDate(formData?.startDate)}</p>
-                <p>End Date: {formatDate(formData?.endDate)}</p>
-                {/* The p-tags above is just a demo */}
+                {/* Display submitted data */}
+                <Text fw={700} className="mb-2">
+                  {formData?.trip}
+                </Text>
+                <Text className="mb-2">{`${formatDate(formData?.startDate)} - ${formatDate(
+                  formData?.endDate
+                )}`}</Text>
+                <BudgetCard
+                  onEditPrevious={handleEditPrevious}
+                  budget={typeof formData?.budget === 'string' ? parseFloat(formData.budget) : formData?.budget || 0} // Convert to number
+                  currency={formData?.currency || ''}
+                />
 
                 <ItineraryForm startDate={formData?.startDate} endDate={formData?.endDate} />
               </div>
             </>
           )}
+
           <Group mt="md">
             {currentStep > 0 && (
-              <Button variant="outline" onClick={() => setCurrentStep(0)}>
+              <Button variant="outline" color="#7539d6" onClick={() => setCurrentStep(0)}>
                 Back
               </Button>
             )}
-            <Button type="submit" className="bg-purple-500">
-              {currentStep === 0 ? 'Click to continue' : 'Create Trip'}
+            <Button type="submit" className="bg-[#7539d6] hover:bg-purple-500">
+              {currentStep === 0 ? 'Create Itinerary' : 'Create Trip'}
             </Button>
           </Group>
         </div>

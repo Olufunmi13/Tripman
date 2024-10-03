@@ -49,8 +49,4 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   );
 }
 
-{
-  /* <ItineraryProvider>
-      <Component {...pageProps} />
-    </ItineraryProvider> */
-}
+

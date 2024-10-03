@@ -14,7 +14,7 @@ export default function SideNav() {
           <span className="hidden md:block"> TripHub</span>
         </div>
       </Link>
-      <div className="hidden md:flex md:flex-col md:justify-between">
+      <div className="hidden md:flex md:flex-col md:justify-between md:mt-2 md:gap-4">
         <NavLinks />
       </div>
     </div>

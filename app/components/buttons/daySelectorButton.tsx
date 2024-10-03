@@ -4,7 +4,9 @@ import { DateButtonProps } from '@/app/interface';
 
 const DateButton: React.FC<DateButtonProps> = ({ day, date, isActive, onClick }) => (
     <Button
-      variant={isActive ? 'filled' : 'outline'}
+      variant={isActive ? 'filled' : 'default'}
+      color='#7539d6'
+      radius="md"
       styles={() => ({
         root: {
           display: 'flex',

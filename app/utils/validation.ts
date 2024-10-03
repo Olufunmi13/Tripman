@@ -1,6 +1,10 @@
+export const validateDropzone = (value: File[]): string | null => {
+  return value.length === 0 ? 'please upload an image' : null;
+}
+
 export const validateTrip = (value: string): string | null => {
-    return value.length < 3 ? "Invalid country" : null;
-  };
+  return value.length < 3 ? "Invalid country" : null;
+};
   
   export const validateStartDate = (value: Date | null): string | null => {
     if (!value) return "Date is required";

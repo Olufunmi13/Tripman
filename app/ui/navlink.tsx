@@ -39,13 +39,13 @@ export default function NavLinks() {
                 isActive ? 'text-[#7539d6]' : ''
               }`}
             >
-              <LinkIcon className={`w-6${isActive ? 'text-[#7539d6]' : ''}`} />
+              <LinkIcon className={`w-6 ${isActive ? 'text-[#7539d6]' : ''}`} />
               <p className="hidden md:block">{link.name}</p>
             </Link>
           </>
         );
       })}
-      <div className="mt-96">
+      <div className="mt-72">
         <Link
           href="/"
           className="flex items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600"
