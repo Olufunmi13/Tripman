@@ -17,9 +17,9 @@ const TripForm: React.FC<TripDetailsFormProps> = ({ form }) => {
   const icon = <CalendarEvent size={22} strokeWidth={1} color={'black'} />;
 
   const handleCurrencyChange = (value: string) => {
-    console.log("Selected Currency:", value);
+    console.log('Selected Currency:', value);
     form.setFieldValue('currency', value);
-  }
+  };
 
   return (
     <>
@@ -71,25 +71,26 @@ const TripForm: React.FC<TripDetailsFormProps> = ({ form }) => {
       <TextInput
         type="number"
         placeholder="1000"
-        label="Transfer amount"
+        label="Budget"
         leftSection={
           <NativeSelect
-          data={currencyData.map(currency => ({
-            value: currency.value,
-            label: `${currency.value}${currency.label} `
-          }))}
+            data={currencyData.map((currency) => ({
+              value: currency.value,
+              label: `${currency.value}${currency.label} `,
+            }))}
             // onChange={(value) => handleCurrencyChange(value)}
-            onChange={(event) => handleCurrencyChange(event.currentTarget.value)} 
-            defaultValue={form.values.currency || currencyData[0].value}
+            onChange={(event) => handleCurrencyChange(event.currentTarget.value)}
+            //value={form.values.currency || currencyData[0].value}
             styles={{
               input: {
                 fontWeight: 400,
                 borderTopLeftRadius: 0,
                 borderBottomLeftRadius: 0,
                 width: rem(92),
-                marginLeft: rem(-3),
+                marginLeft: rem(-1),
               },
             }}
+            className='mr-2'
             classNames={{ input: classes.input }}
           />
         }
@@ -103,4 +104,3 @@ const TripForm: React.FC<TripDetailsFormProps> = ({ form }) => {
 };
 
 export default TripForm;
-

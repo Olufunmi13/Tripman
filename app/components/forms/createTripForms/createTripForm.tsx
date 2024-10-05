@@ -12,6 +12,7 @@ import {
 } from '@/app/utils/validation';
 import { FormValues } from '@/app/interface';
 import { formatDate } from '@/app/utils/utils';
+import { currencyData } from '@/app/data/formData';
 import ItineraryForm from '@/app/components/forms/createTripForms/itineraryform';
 import TripForm from './tripForm';
 import { BudgetCard } from './budgetCard';
@@ -29,7 +30,7 @@ export default function CreateTripForm() {
       startDate: null,
       endDate: null,
       budget: '',
-      currency: '',
+      currency: currencyData[0].value,
       itinerary: {},
     },
     validate: {

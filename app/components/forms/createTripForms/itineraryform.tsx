@@ -54,7 +54,7 @@ const ItineraryForm: React.FC<DaySelectorProps> = ({ startDate, endDate }) => {
           <Button color="blue" variant="subtle" onClick={() => modalHandlers.close()}>
             Cancel
           </Button>
-          <Button color="gray" variant="outline" onClick={() => handleAddEvent}>
+          <Button color="gray" variant="outline" onSubmit={() => handleAddEvent}>
             Save
           </Button>
         </Group>
