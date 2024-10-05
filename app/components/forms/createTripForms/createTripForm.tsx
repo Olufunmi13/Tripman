@@ -83,7 +83,11 @@ export default function CreateTripForm() {
                 )}`}</Text>
                 <BudgetCard
                   onEditPrevious={handleEditPrevious}
-                  budget={typeof formData?.budget === 'string' ? parseFloat(formData.budget) : formData?.budget || 0} // Convert to number
+                  budget={
+                    typeof formData?.budget === 'string'
+                      ? parseFloat(formData.budget)
+                      : formData?.budget || 0
+                  } // Convert to number
                   currency={formData?.currency || ''}
                 />
 

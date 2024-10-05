@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
-import { useDisclosure } from '@mantine/hooks';
-import { Button, TextInput, Modal } from '@mantine/core';
+import { Button, TextInput } from '@mantine/core';
 import { EventFormProps } from '@/app/interface';
 
 const EventForm: React.FC<EventFormProps> = ({ onAddEvent }) => {
@@ -8,7 +7,6 @@ const EventForm: React.FC<EventFormProps> = ({ onAddEvent }) => {
   const [eventTime, setEventTime] = useState('');
   const [eventAddress, setEventAddress] = useState('');
   const [eventCost, setEventCost] = useState('');
-  const [opened, { open, close }] = useDisclosure(false);
 
   const handleSubmit = () => {
     onAddEvent({
@@ -25,7 +23,6 @@ const EventForm: React.FC<EventFormProps> = ({ onAddEvent }) => {
   };
 
   return (
-    <Modal opened={opened} onClose={close}>
       <div>
         <TextInput
           placeholder="Event Title"
@@ -51,7 +48,6 @@ const EventForm: React.FC<EventFormProps> = ({ onAddEvent }) => {
           Add Event
         </Button>
       </div>
-    </Modal>
   );
 };
 

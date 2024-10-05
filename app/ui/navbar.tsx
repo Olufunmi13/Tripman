@@ -6,7 +6,7 @@ import Avatarr from "../lib/Avatarr.jpg"
 
 export default function Navbar() {
   return (
-    <nav className="flex items-center justify-between bg-white shadow-lg shadow-gray-300/50 h-14 w-screen fixed top-0">
+    <nav className="flex items-center justify-between bg-white shadow-lg shadow-gray-300/50 h-14 w-screen fixed top-0 z-10">
       <div className="w-8 h-8 mt-3 mb-[5px] ml-3">
       <Link
         className="mb-2 flex items-center justify-start rounded-md bg-[#ffff]"
