@@ -27,13 +27,13 @@ export default function NavLinks() {
 
   return (
     <>
-      {links.map((link) => {
+      {links.map((link, index) => {
         const LinkIcon = link.icon;
         const isActive = pathname === link.href;
         return (
           <>
             <Link
-              key={link.name}
+              key={index}
               href={link.href}
               className={`flex items-center justify-center gap-2 rounded-md bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600 ${
                 isActive ? 'text-[#7539d6]' : ''

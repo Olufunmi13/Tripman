@@ -17,18 +17,20 @@ export interface DateButtonProps {
     onClick: () => void;
 }
 export interface Event {
-    title: string;
-    time: string;
-    address: string;
+    activity: string;
+    starttime: string;
+    location: string;
     estimatedCost: string;
 }
 export interface EventFormProps {
-    onAddEvent: (event: {
-      title: string;
-      time: string;
-      address: string;
-      estimatedCost: string;
-    }) => void;
+    eventActivity: string;
+  setEventActivity: (value: string) => void;
+  eventStartTime: string ;
+  setEventStartTime:(value: string) => void;
+  eventLocation: string;
+  setEventLocation: (value: string) => void;
+  eventEstimatedCost: string;
+  setEventEstimatedCost: (value: string) => void;
 }
 export interface DayData {
     day: string;

@@ -7,7 +7,7 @@ import { CalendarEvent } from 'tabler-icons-react';
 import { DropZone } from './dropzone';
 // import { validateBudget } from '@/app/utils/validation';
 import { FormValues } from '@/app/interface';
-import classes from '@/styles/TripForm.module.css';
+import classes from '@/styles/Form.module.css';
 
 interface TripDetailsFormProps {
   form: UseFormReturnType<FormValues>;

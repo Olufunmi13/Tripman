@@ -1,7 +1,7 @@
 'use client';
 import React, { useState } from 'react';
 import '@mantine/dates/styles.css';
-import { Button, Group, Text, Flex } from '@mantine/core';
+import { Button, Group, Text, Flex, Avatar } from '@mantine/core';
 import { useForm, UseFormReturnType } from '@mantine/form';
 import {
   validateDropzone,
@@ -16,6 +16,7 @@ import { currencyData } from '@/app/data/formData';
 import ItineraryForm from '@/app/components/forms/createTripForms/itineraryform';
 import TripForm from './tripForm';
 import { BudgetCard } from './budgetCard';
+import { CalendarEvent } from 'tabler-icons-react';
 
 const steps = ['Step 1: Trip Details', 'Step 2: Itinerary Information'];
 
@@ -63,7 +64,7 @@ export default function CreateTripForm() {
   return (
     <div className="flex items-center justify-center min-h-screen">
       <form
-        className="bg-white p-8 rounded shadow-md w-full sm:w-5/12"
+        className="bg-white p-8 rounded shadow-md w-full sm:w-6/12"
         onSubmit={(e) => {
           e.preventDefault();
           handleNext();
@@ -79,9 +80,21 @@ export default function CreateTripForm() {
                 <Text fw={700} className="mb-2">
                   {formData?.trip}
                 </Text>
-                <Text className="mb-2">{`${formatDate(formData?.startDate)} - ${formatDate(
-                  formData?.endDate
-                )}`}</Text>
+                <div className="flex items-center justify-start mb-2">
+                  <CalendarEvent size={22} strokeWidth={1} color={'black'} />
+                  <Text className="mb-2">{`${formatDate(formData?.startDate)} - ${formatDate(
+                    formData?.endDate
+                  )}`}</Text>
+                </div>
+                <Avatar.Group>
+                  <Avatar src="image.png" />
+                  <Avatar src="image.png" />
+                  <Avatar src="image.png" />
+                  <Avatar>+5</Avatar>
+                </Avatar.Group>
+                <Text fw={500} className="mb-1">
+                  Budget
+                </Text>
                 <BudgetCard
                   onEditPrevious={handleEditPrevious}
                   budget={

@@ -27,3 +27,5 @@ export const validateTrip = (value: string): string | null => {
     if (value <= 0) return "Set a realistic budget";
     return null;
   };
+
+ 
