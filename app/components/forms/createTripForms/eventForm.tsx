@@ -5,7 +5,7 @@ import { TimeInput } from '@mantine/dates';
 import classes from '@/styles/Form.module.css';
 import { IconLocation, IconCost, IconTime } from '@/app/customIcons/svgIcons';
 
-const EventForm: React.FC<EventFormProps & { form: any }> = ({
+const EventForm: React.FC<EventFormProps> = ({
   eventActivity,
   setEventActivity,
   eventStartTime,
