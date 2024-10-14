@@ -1,10 +1,17 @@
 export const formatDate = (date: Date | null | undefined): string => {
     if (!date) return 'N/A';
     return date.toLocaleDateString('en-US', {
-      // year: 'numeric',
       month: 'long',
       day: 'numeric',
     });
+};
+
+export const formatTime = (timeString: string): string => {
+  const [hours, minutes] = timeString.split(':').map(Number);
+  const period = hours >= 12 ? 'PM' : 'AM';
+  const formattedHours = hours % 12 || 12;
+
+  return `${formattedHours.toString().padStart(2, '0')}:${minutes.toString().padStart(2, '0')} ${period}`;
 };
 
 export const getDatesBetween = (startDate: Date, endDate: Date): string[] => {

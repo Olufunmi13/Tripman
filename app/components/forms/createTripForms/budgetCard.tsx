@@ -5,9 +5,12 @@ interface BudgetCardProps {
   onEditPrevious?: () => void;
   budget: number;
   currency: string;
+  totalCost: number;
 }
-export function BudgetCard({ onEditPrevious, budget, currency }: BudgetCardProps) {
+export function BudgetCard({ onEditPrevious, budget, currency, totalCost }: BudgetCardProps) {
   const icon = <Edit size={20} strokeWidth={1.5} color={'gray'} />;
+  const progressPercentage = Math.min((totalCost / budget) * 100, 100);
+  const roundedPercentage = Math.round(progressPercentage * 100) / 100;
 
   return (
     <Card withBorder radius="md" bg="#ffffff"
@@ -35,12 +38,12 @@ export function BudgetCard({ onEditPrevious, budget, currency }: BudgetCardProps
         </Button>
       </Group>
       <Text fz="lg" fw={700}>
-        $5.431 / $10.000
+        {currency}{totalCost}
       </Text>
-      <Progress value={54.31} mt="md" size="lg" radius="xl" color="#7539d6"/>
+      <Progress value={progressPercentage} mt="md" size="lg" radius="xl" color="#7539d6"/>
       <Group justify="space-between" className="mt-1">
         <Text fz="xs" size="sm" c="dimmed">
-          %
+          {roundedPercentage}%
         </Text>
         <Text fz="xs" size="sm" c="dimmed">
           {currency}{budget}

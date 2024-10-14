@@ -15,8 +15,8 @@ export const IconLocation: React.FC = () => (
         y2="20.75"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#E70000" />
-        <stop offset="1" stop-color="#C40C0C" />
+        <stop stopColor="#E70000" />
+        <stop offset="1" stopColor="#C40C0C" />
       </linearGradient>
     </defs>
   </svg>
@@ -36,8 +36,8 @@ export const IconCost: React.FC = () => (
         y2="20.9001"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#E39300" />
-        <stop offset="1" stop-color="#BF871F" />
+        <stop stopColor="#E39300" />
+        <stop offset="1" stopColor="#BF871F" />
       </linearGradient>
     </defs>
   </svg>
@@ -57,8 +57,8 @@ export const IconTime: React.FC = () => (
         y2="17"
         gradientUnits="userSpaceOnUse"
       >
-        <stop stop-color="#AE7DFF" />
-        <stop offset="1" stop-color="#3E16B6" />
+        <stop stopColor="#AE7DFF" />
+        <stop offset="1" stopColor="#3E16B6" />
       </linearGradient>
     </defs>
   </svg>
@@ -69,12 +69,12 @@ export const IconLocationItin: React.FC = () => (
     <path
       d="M8 8.95334C9.14875 8.95334 10.08 8.02209 10.08 6.87334C10.08 5.72458 9.14875 4.79333 8 4.79333C6.85125 4.79333 5.92 5.72458 5.92 6.87334C5.92 8.02209 6.85125 8.95334 8 8.95334Z"
       stroke="#5D5D5D"
-      stroke-width="1.5"
+      strokeWidth="1.5"
     />
     <path
       d="M2.41333 5.66C3.72667 -0.113337 12.28 -0.10667 13.5867 5.66666C14.3533 9.05333 12.2467 11.92 10.4 13.6933C9.06 14.9867 6.94 14.9867 5.59333 13.6933C3.75333 11.92 1.64667 9.04666 2.41333 5.66Z"
       stroke="#5D5D5D"
-      stroke-width="1.5"
+      strokeWidth="1.5"
     />
   </svg>
 );
@@ -84,23 +84,23 @@ export const IconCostItin: React.FC = () => (
     <path
       d="M12.3333 8.43333V10.9C12.3333 12.98 10.3933 14.6667 8 14.6667C5.60667 14.6667 3.66667 12.98 3.66667 10.9V8.43333C3.66667 10.5133 5.60667 12 8 12C10.3933 12 12.3333 10.5133 12.3333 8.43333Z"
       stroke="#5D5D5D"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M12.3333 5.1C12.3333 5.70666 12.1667 6.26666 11.8733 6.74666C11.16 7.91999 9.69334 8.66666 8 8.66666C6.30667 8.66666 4.84001 7.91999 4.12667 6.74666C3.83334 6.26666 3.66667 5.70666 3.66667 5.1C3.66667 4.06 4.15333 3.11999 4.93333 2.43999C5.72 1.75333 6.8 1.33333 8 1.33333C9.2 1.33333 10.28 1.75333 11.0667 2.43333C11.8467 3.12 12.3333 4.06 12.3333 5.1Z"
       stroke="#5D5D5D"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
     <path
       d="M12.3333 5.1V8.43333C12.3333 10.5133 10.3933 12 8 12C5.60667 12 3.66667 10.5133 3.66667 8.43333V5.1C3.66667 3.02 5.60667 1.33333 8 1.33333C9.2 1.33333 10.28 1.75333 11.0667 2.43333C11.8467 3.12 12.3333 4.06 12.3333 5.1Z"
       stroke="#5D5D5D"
-      stroke-width="1.5"
-      stroke-linecap="round"
-      stroke-linejoin="round"
+      strokeWidth="1.5"
+      strokeLinecap="round"
+      strokeLinejoin="round"
     />
   </svg>
 );

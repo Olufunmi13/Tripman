@@ -23,6 +23,11 @@ const steps = ['Step 1: Trip Details', 'Step 2: Itinerary Information'];
 export default function CreateTripForm() {
   const [currentStep, setCurrentStep] = useState(0);
   const [formData, setFormData] = useState<FormValues | null>(null);
+  const [totalCost, setTotalCost] = useState<number>(0);
+
+  const handleTotalCostChange = (newTotalCost: number) => {
+    setTotalCost(newTotalCost);
+  };
 
   const form: UseFormReturnType<FormValues> = useForm<FormValues>({
     initialValues: {
@@ -103,9 +108,20 @@ export default function CreateTripForm() {
                       : formData?.budget || 0
                   } // Convert to number
                   currency={formData?.currency || ''}
+                  totalCost={totalCost}
                 />
 
-                <ItineraryForm startDate={formData?.startDate} endDate={formData?.endDate} />
+                <ItineraryForm
+                  startDate={formData?.startDate}
+                  endDate={formData?.endDate}
+                  currency={formData?.currency || ' '}
+                  budget={
+                    typeof formData?.budget === 'string'
+                      ? parseFloat(formData.budget)
+                      : formData?.budget || 0
+                  }
+                  onTotalCostChange={handleTotalCostChange}
+                />
               </div>
             </>
           )}

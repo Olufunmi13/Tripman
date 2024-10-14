@@ -18,21 +18,11 @@ export interface DateButtonProps {
 }
 export interface Event {
     activity: string;
-    starttime: string;
+    startTime: string;
     location: string;
     estimatedCost: string;
 }
-export interface EventFormProps {
-    eventActivity: string;
-    setEventActivity: (value: string) => void;
-    eventStartTime: string ;
-    setEventStartTime:(value: string) => void;
-    eventLocation: string;
-    setEventLocation: (value: string) => void;
-    eventEstimatedCost: string;
-    setEventEstimatedCost: (value: string) => void;
-    form: any
-}
+
 export interface DayData {
     day: string;
     events: Event[];
@@ -41,4 +31,5 @@ export interface DayData {
 export interface DaySelectorProps {
     startDate: Date | null | undefined;
     endDate: Date | null | undefined;
+    currency: string;
 }
