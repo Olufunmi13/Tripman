@@ -10,6 +10,7 @@ import {
   validateEndDate,
   validateBudget,
 } from '@/app/utils/validation';
+import Avatarr from '@/app/lib/Avatarr.jpg';
 import { FormValues } from '@/app/interface';
 import { formatDate } from '@/app/utils/utils';
 import { currencyData } from '@/app/data/formData';
@@ -92,7 +93,7 @@ export default function CreateTripForm() {
                   )}`}</Text>
                 </div>
                 <Avatar.Group>
-                  <Avatar src="image.png" />
+                  <Avatar src={'Avatarr'} />
                   <Avatar src="image.png" />
                   <Avatar src="image.png" />
                   <Avatar>+5</Avatar>

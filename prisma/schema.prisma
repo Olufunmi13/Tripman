@@ -1,0 +1,64 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            Int      @id @default(autoincrement())
+  username      String  @unique
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  password      String
+  trips         Trip[]
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}
+
+// model Trip {
+//   id          Int       @id @default(autoincrement())
+//   user        User      @relation(fields: [userId], references: [id])
+//   userId      Int
+//   tripName    String
+//   email       String
+//   password    String
+//   // Add other fields based on your forms
+//   createdAt   DateTime  @default(now())
+//   updatedAt   DateTime  @updatedAt
+// }
+
+model Trip {
+  id         Int       @id @default(autoincrement())
+  user        User      @relation(fields: [userId], references: [id])
+  userId      Int
+  tripName   String
+  startDate  DateTime
+  endDate    DateTime
+  budget     Float
+  file       String?   // Stores the path or URL of the uploaded file
+  events     Event[]   // Relation to multiple events
+  createdAt  DateTime  @default(now())
+  updatedAt  DateTime  @updatedAt
+}
+
+model Event {
+  id            Int      @id @default(autoincrement())
+  tripId        Int
+  trip          Trip     @relation(fields: [tripId], references: [id])
+  activity      String
+  time          DateTime
+  location      String
+  estimatedCost Float
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+}

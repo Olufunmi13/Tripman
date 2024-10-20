@@ -1,0 +1,37 @@
+.root {
+  position: relative;
+}
+
+.input:focus {
+  outline: 2px solid #7539d6;
+  outline-offset: -1px;
+}
+
+/* .input {
+  position: relative;
+} */
+
+.label {
+  position: absolute;
+  z-index: 2;
+  top: 10px;
+  left: 1rem;
+  pointer-events: none;
+  color: gray;
+  transition: transform 150ms ease, font-size 150ms ease, color 150ms ease;
+}
+
+/* Floating label when input is focused or has a value */
+.input:focus-within .label,
+.floating .label {
+  transform: translateY(-18px);
+  font-size: 0.8rem;
+  font-weight: 500;
+  color: #7539d6;
+  background-color: white;
+}
+
+.purpleBorder input:focus {
+  border: 2px solid #7539d6 !important;
+  outline: none;
+}

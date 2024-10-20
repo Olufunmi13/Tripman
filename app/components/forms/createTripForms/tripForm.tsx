@@ -78,9 +78,7 @@ const TripForm: React.FC<TripDetailsFormProps> = ({ form }) => {
               value: currency.value,
               label: `${currency.value}${currency.label} `,
             }))}
-            // onChange={(value) => handleCurrencyChange(value)}
             onChange={(event) => handleCurrencyChange(event.currentTarget.value)}
-            //value={form.values.currency || currencyData[0].value}
             styles={{
               input: {
                 fontWeight: 400,

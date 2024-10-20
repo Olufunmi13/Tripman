@@ -1,9 +1,7 @@
 import React from 'react'
 
-const signInForm = () => {
+export default function signInForm() {
   return (
     <div>signInForm</div>
   )
 }
-
-export default signInForm

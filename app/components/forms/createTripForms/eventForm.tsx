@@ -26,8 +26,6 @@ const EventForm: React.FC<EventFormProps> = ({ form }) => {
         classNames={{ input: classes.input }}
         label="Activity"
         placeholder="e.g Time Square"
-        // value={eventActivity}
-        // onChange={(e) => setEventActivity(e.currentTarget.value)}
       />
       <TimeInput
         className="mb-3"
@@ -37,8 +35,6 @@ const EventForm: React.FC<EventFormProps> = ({ form }) => {
         {...form.getInputProps('startTime')}
         ref={ref}
         rightSection={pickerControl}
-        // value={eventStartTime}
-        // onChange={(e) => setEventStartTime(e.currentTarget.value)}
       />
       <TextInput
         className="mb-3"
@@ -47,8 +43,6 @@ const EventForm: React.FC<EventFormProps> = ({ form }) => {
         placeholder="Add Location"
         leftSection={<IconLocation />}
         {...form.getInputProps('location')}
-        // value={eventLocation}
-        // onChange={(e) => setEventLocation(e.currentTarget.value)}
       />
       <TextInput
         className="mb-3"
@@ -57,8 +51,6 @@ const EventForm: React.FC<EventFormProps> = ({ form }) => {
         placeholder="Enter estimated cost"
         leftSection={<IconCost />}
         {...form.getInputProps('estimatedCost')}
-        // value={eventEstimatedCost}
-        // onChange={(e) => setEventEstimatedCost(e.currentTarget.value)}
       />
     </div>
   );
