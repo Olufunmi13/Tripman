@@ -17,7 +17,6 @@ model User {
   id            Int      @id @default(autoincrement())
   username      String  @unique
   email         String?   @unique
-  emailVerified DateTime?
   image         String?
   password      String
   trips         Trip[]
@@ -25,17 +24,7 @@ model User {
   updatedAt     DateTime @updatedAt
 }
 
-// model Trip {
-//   id          Int       @id @default(autoincrement())
-//   user        User      @relation(fields: [userId], references: [id])
-//   userId      Int
-//   tripName    String
-//   email       String
-//   password    String
-//   // Add other fields based on your forms
-//   createdAt   DateTime  @default(now())
-//   updatedAt   DateTime  @updatedAt
-// }
+
 
 model Trip {
   id         Int       @id @default(autoincrement())

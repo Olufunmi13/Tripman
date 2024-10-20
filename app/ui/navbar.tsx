@@ -2,9 +2,11 @@ import React from "react";
 import { CirclePlus } from "tabler-icons-react";
 import Link from "next/link";
 import Image from "next/image";
+import { useSession } from 'next-auth/react';
 import Avatarr from "../lib/Avatarr.jpg"
 
 export default function Navbar() {
+  const { data: session } = useSession();
   return (
     <nav className="flex items-center justify-between bg-white shadow-lg shadow-gray-300/50 h-14 w-screen fixed top-0 z-10">
       <div className="w-8 h-8 mt-3 mb-[5px] ml-3">
@@ -27,7 +29,7 @@ export default function Navbar() {
           </button>
         </Link>
         <Image
-          src={Avatarr}
+          src={session?.user?.image || Avatarr}
           alt="avatar"
           width={30}
           height={30}

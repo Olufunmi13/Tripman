@@ -10,8 +10,13 @@ interface User {
   email: string;
 }
 
+interface CredentialsWithAction
+  extends Partial<Record<'username' | 'email' | 'password', unknown>> {
+  action?: 'signup' | 'login';
+}
+
 async function compareHash(plainTextPassword: string, hashedPassword: string): Promise<boolean> {
-  return await bcrypt.compareSync(plainTextPassword, hashedPassword);
+  return bcrypt.compareSync(plainTextPassword, hashedPassword);
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
@@ -25,28 +30,60 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         email: { label: 'Email', type: 'email' },
       },
       async authorize(
-        credentials
+        credentials: CredentialsWithAction
       ): Promise<{ id: string; username: string | null; email: string } | null> {
         try {
-          // Find user by username
-          const user = await prisma.user.findUnique({
-            where: { username: credentials?.username as string },
-          });
+          if (credentials.action === 'signup') {
+            const existingUser = await prisma.user.findUnique({
+              where: { email: credentials?.email as string },
+            });
 
-          if (!user) {
-            throw new Error('user_not_found');
+            if (existingUser) {
+              throw new Error('Email already exists');
+            }
+
+            const hashedPassword = await bcrypt.hash(credentials.password as string, 10);
+            const image = String(credentials.username).charAt(0).toUpperCase();
+
+            const newUser = await prisma.user.create({
+              data: {
+                username: String(credentials.username),
+                email: String(credentials.email),
+                password: String(hashedPassword),
+                image,
+              },
+            });
+            return {
+              id: String(newUser.id),
+              username: newUser.username,
+              email: String(newUser.email),
+            };
+          } else {
+            const user = await prisma.user.findUnique({
+              where: { username: credentials?.username as string },
+            });
+
+            if (!user) {
+              throw new Error('user_not_found');
+            }
+
+            // Check if password matches
+            const isValid = await compareHash(credentials.password as string, user.password);
+            if (!isValid) {
+              throw new Error('Invalid password');
+            }
+
+            return { id: String(user.id), username: user.username, email: String(user.email) };
           }
-
-          // Check if password matches
-          const isValid = await compareHash(credentials.password as string, user.password);
-          if (!isValid) {
-            throw new Error('Invalid password');
+        } catch (error: unknown) {
+          console.error('Authorization error:', error);
+          // return null;
+          // throw error;
+          if (error instanceof Error) {
+            throw error;
+          } else {
+            throw new Error('An unexpected error occurred');
           }
-
-          return { id: String(user.id), username: user.username, email: String(user.email) };
-        } catch (error) {
-          console.error(error);
-          return null;
         }
       },
     }),
@@ -54,10 +91,28 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
   session: {
     strategy: 'jwt',
   },
+  callbacks: {
+    async jwt({ token, user } : { token:any, user:any | null }): Promise<any>{
+      if (user) {
+        token.id = user.id;
+        token.username = user.username;
+        token.email = user.email;
+        token.image = user.image;
+      }
+      return token;
+    },
+    async session({ session, token } : { session: any, token: any}) {
+      session.user.id = token.id;
+      session.user.username = token.username;
+      session.user.email = token.email;
+      session.user.image = token.image; 
+      return session;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET,
   pages: {
     signIn: '/ui/login',
     signOut: '/ui/login',
-    error: '/api/auth/login',
+    error: '/ui/login',
   },
 });

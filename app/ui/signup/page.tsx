@@ -46,26 +46,23 @@ export default function Signup() {
 
   const handleSubmit = async (values: SignUpValues) => {
     setLoading(true);
+    console.log('Values before submission:', values);
+
     try {
-      const response = await fetch('app/api/auth/signup', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          username: values.username, 
-          email: values.email,
-          password: values.password,
-        }),
+      const result = await signIn('credentials', {
+        redirect: false,
+        username: values.username,
+        password: values.password,
+        email: values.email,
+        action: 'signup', 
       });
   
-      const data = await response.json();
-  
-      if (response.ok) {
+      if (!result?.ok) {
+        alert('Please enter your credentials');
+      } else {
         alert('Account created successfully. Please log in.');
         router.push('/ui/login'); // Redirect to login page after signup
-      } else {
-        alert(data.message || 'An unexpected error occurred. Please try again.');
+        
       }
     } catch (error) {
       console.error('Signup error:', error);

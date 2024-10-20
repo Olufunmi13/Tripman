@@ -1,5 +1,6 @@
-import '@/styles/globals.css';
 
+
+import '@/styles/globals.css';
 import { appConfig } from '@/config/app';
 import { createTheme, MantineProvider } from '@mantine/core';
 import type { Metadata } from 'next';
@@ -36,12 +37,13 @@ const theme = createTheme({
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+
   return (
     <html data-mantine-color-scheme="light" lang="en">
       <body className={font.className}>
         <Providers>
           <MantineProvider theme={theme}>
-            <Navbar />
+          {/* {!hideNavbar && <Navbar />} */}
             <main>{children}</main>
           </MantineProvider>
         </Providers>

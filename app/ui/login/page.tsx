@@ -37,45 +37,50 @@ export default function Login() {
 
   const router = useRouter();
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (values: LoginFormValues) => {
     setLoading(true);
-    try {
-      const result = await signIn('credentials', {
+    setError(null);
+    // try {
+      // const result = 
+      await signIn('credentials', {
         redirect: false,
         username: values.username,
         password: values.password,
         provider: 'credentials',
-        callbackUrl: '/',
+        action: 'login',
+        callbackUrl: '/'
       });
 
-      if (!result?.ok) {
-        if (result?.error === 'invalid_credentials') {
-          alert('Invalid username or password');
-        } else if (result?.error === 'user_not_found') {
-          // Redirect to signup page if user is not found
-          alert('User not found. Redirecting to signup page.');
-          router.push('/ui/signup');
-        } else {
-          alert('An unexpected error occurred. Please try again.');
-        }
-      } else {
-        // User exists, redirect to home page
-        router.push('/');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('An unexpected error occurred. Please try again later.');
-    } finally {
-      setLoading(false);
-    }
+    //   if (!result?.ok) {
+    //     if (result?.error === 'user_not_found') {
+    //       setError('User not found. Redirecting to signup page.');
+    //       router.push('/ui/signup');
+    //     } else if (result?.error === 'invalid_credentials') {
+    //       setError('Invalid username or password.');
+    //     } else {
+    //       setError('An unexpected error occurred. Please try again.');
+    //     }
+    //   } else {
+    //     // User exists, redirect to home page
+    //     router.push('/');
+    //   }
+    // } catch (err) {
+    //   console.error(err);
+    //   setError('An unexpected error occurred. Please try again later.');
+    // } finally {
+    //   setLoading(false);
+    // }
   };
 
   return (
     <Container size={420} my={90} className="overflow-hidden">
       <Group justify="center" className="my-2">
         <span className="w-10 h-10 rounded-full bg-gradient-to-r from-[#B68AFF] to-[#3E16B6]"></span>
-        <Text size="lg" fw={700}>TripHub</Text>
+        <Text size="lg" fw={700}>
+          TripHub
+        </Text>
       </Group>
       <Text ta="center" fw={700} className="my-3">
         Welcome back!
@@ -107,6 +112,11 @@ export default function Login() {
               form.values.password.trim() || form.isTouched('password') ? classes.floating : ''
             } ${classes.purpleBorder}`}
           />
+          {error && (
+            <Text color="red" size="sm">
+              {error}
+            </Text>
+          )}
           <Anchor component="button" size="sm" ta="right" c="#7539d6">
             Forgot password?
           </Anchor>
