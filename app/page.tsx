@@ -33,6 +33,7 @@ export default function Home() {
     );
   }
   console.log('Rendered session:', session);
+  console.log('User Image:', session.user?.image);
   return (
     <>
           <SideNav />

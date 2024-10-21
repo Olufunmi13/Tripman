@@ -34,7 +34,8 @@ model Trip {
   startDate  DateTime
   endDate    DateTime
   budget     Float
-  file       String?   // Stores the path or URL of the uploaded file
+  currency    String
+  dropZone       String?   // Stores the path or URL of the uploaded file
   events     Event[]   // Relation to multiple events
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt

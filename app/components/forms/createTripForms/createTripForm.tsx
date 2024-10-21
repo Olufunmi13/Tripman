@@ -18,6 +18,7 @@ import ItineraryForm from '@/app/components/forms/createTripForms/itineraryform'
 import TripForm from './tripForm';
 import { BudgetCard } from './budgetCard';
 import { CalendarEvent } from 'tabler-icons-react';
+import axios from 'axios';
 
 const steps = ['Step 1: Trip Details', 'Step 2: Itinerary Information'];
 
@@ -53,13 +54,32 @@ export default function CreateTripForm() {
     setCurrentStep(currentStep - 1);
   };
 
-  const handleNext = () => {
+  const handleNext = async () => {
     const errors = form.validate();
 
     if (!errors.hasErrors) {
-      console.log('Form Values:', form.values);
       if (currentStep === 0) {
         setFormData(form.values);
+        console.log('Form Values:', form.values);
+        const requestData = {
+          tripName: form.values.trip,
+          startDate: form.values.startDate,
+          endDate: form.values.endDate,
+          budget: form.values.budget,
+          currency: form.values.currency,
+          dropZone: form.values.dropZone,
+        };
+  
+        try {
+          const response = await axios.post('/api/trips', requestData);
+          console.log('API Response:', response.data);
+  
+          // If the request is successful, proceed to the next step
+          setCurrentStep(1);
+        } catch (error) {
+          console.error('Error saving trip data:', error);
+          // Handle error (e.g., show a notification)
+        }
         setCurrentStep(1);
       } else {
         console.log('Final Submission:', { ...formData, ...form.values });

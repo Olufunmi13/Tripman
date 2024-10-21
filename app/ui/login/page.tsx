@@ -42,8 +42,8 @@ export default function Login() {
   const handleSubmit = async (values: LoginFormValues) => {
     setLoading(true);
     setError(null);
-    // try {
-      // const result = 
+    try {
+      const result = 
       await signIn('credentials', {
         redirect: false,
         username: values.username,
@@ -53,25 +53,25 @@ export default function Login() {
         callbackUrl: '/'
       });
 
-    //   if (!result?.ok) {
-    //     if (result?.error === 'user_not_found') {
-    //       setError('User not found. Redirecting to signup page.');
-    //       router.push('/ui/signup');
-    //     } else if (result?.error === 'invalid_credentials') {
-    //       setError('Invalid username or password.');
-    //     } else {
-    //       setError('An unexpected error occurred. Please try again.');
-    //     }
-    //   } else {
-    //     // User exists, redirect to home page
-    //     router.push('/');
-    //   }
-    // } catch (err) {
-    //   console.error(err);
-    //   setError('An unexpected error occurred. Please try again later.');
-    // } finally {
-    //   setLoading(false);
-    // }
+      if (!result?.ok) {
+        if (result?.error === 'user_not_found') {
+          setError('User not found. Redirecting to signup page.');
+          router.push('/ui/signup');
+        } else if (result?.error === 'invalid_credentials') {
+          setError('Invalid username or password.');
+        } else {
+          setError('An unexpected error occurred. Please try again.');
+        }
+      } else {
+        // User exists, redirect to home page
+        router.push('/');
+      }
+    } catch (err) {
+      console.error(err);
+      setError('An unexpected error occurred. Please try again later.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (

@@ -1,4 +1,5 @@
 import NextAuth from 'next-auth';
+import  NextAuthOptions  from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/app/lib/prisma';
@@ -31,7 +32,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
       },
       async authorize(
         credentials: CredentialsWithAction
-      ): Promise<{ id: string; username: string | null; email: string } | null> {
+      ): Promise<{ id: string; username: string | null; email: string; image: string | null } | null> {
         try {
           if (credentials.action === 'signup') {
             const existingUser = await prisma.user.findUnique({
@@ -57,6 +58,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               id: String(newUser.id),
               username: newUser.username,
               email: String(newUser.email),
+              image: newUser.image,
             };
           } else {
             const user = await prisma.user.findUnique({
@@ -73,7 +75,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               throw new Error('Invalid password');
             }
 
-            return { id: String(user.id), username: user.username, email: String(user.email) };
+            return { id: String(user.id), username: user.username, email: String(user.email), image: user.image};
           }
         } catch (error: unknown) {
           console.error('Authorization error:', error);

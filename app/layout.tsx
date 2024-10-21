@@ -1,11 +1,9 @@
-
-
 import '@/styles/globals.css';
 import { appConfig } from '@/config/app';
 import { createTheme, MantineProvider } from '@mantine/core';
 import type { Metadata } from 'next';
 import { Work_Sans, Inter } from 'next/font/google';
-import Navbar from './ui/navbar';
+import NavbarWrapper from './ui/navbarwrapper';
 import { Providers } from './provider';
 
 const font = Work_Sans({ subsets: ['latin'] });
@@ -37,13 +35,12 @@ const theme = createTheme({
 });
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-
   return (
     <html data-mantine-color-scheme="light" lang="en">
       <body className={font.className}>
         <Providers>
           <MantineProvider theme={theme}>
-          {/* {!hideNavbar && <Navbar />} */}
+            <NavbarWrapper />
             <main>{children}</main>
           </MantineProvider>
         </Providers>
