@@ -65,7 +65,6 @@ export default function CreateTripForm() {
     if (!errors.hasErrors) {
       if (currentStep === 0) {
         setFormData(form.values);
-        console.log('Form Values:', form.values);
         const requestData = {
           tripName: form.values.trip,
           startDate: form.values.startDate,
@@ -77,7 +76,6 @@ export default function CreateTripForm() {
 
         try {
           const response = await axios.post('/api/trips', requestData);
-          console.log('API Response:', response.data);
           setTripId(response.data.tripId);
           await uploadFiles(response.data.tripId); 
           // If the request is successful, proceed to the next step
@@ -87,7 +85,6 @@ export default function CreateTripForm() {
           // Handle error (e.g., show a notification)
         }
       } else {
-        console.log('Final Submission:', { ...formData, ...form.values });
         router.push('/');
       }
     }
@@ -122,8 +119,6 @@ export default function CreateTripForm() {
         console.error('Error uploading file:', error);
       }
     }
-
-    console.log('Uploaded files:', uploadedFiles);
   };
 
   return (

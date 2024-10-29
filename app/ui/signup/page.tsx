@@ -47,7 +47,6 @@ export default function Signup() {
 
   const handleSubmit = async (values: SignUpValues) => {
     setLoading(true);
-    console.log('Values before submission:', values);
 
     try {
       const result = await signIn('credentials', {

@@ -5,16 +5,12 @@ import axios from 'axios';
 
 export async function POST(req: Request) {
   try {
-    console.log('Request received');
     const session = await auth();
-    console.log('Session:', session);
-
     if (!session || !session.user?.id) {
       return NextResponse.json({ message: 'Unauthorized' }, { status: 401 });
     }
 
     const body = await req.json();
-    console.log('Request body:', body);
     const { tripName, startDate, endDate, budget, currency } = body;
 
     // Validate input data without dropZone

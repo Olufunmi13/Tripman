@@ -9,8 +9,6 @@ interface TripCardProps {
 }
 export default function TripCard({ trip }: TripCardProps) {
   const router = useRouter();
-  console.log('Received trip:', trip);
-  console.log('Image:', trip.image);
   return (
     <Card
       shadow="sm"

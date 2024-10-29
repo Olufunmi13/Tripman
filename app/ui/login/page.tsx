@@ -42,8 +42,6 @@ export default function Login() {
   const handleSubmit = async (values: LoginFormValues) => {
     setLoading(true);
     setError(null);
-    console.log('Submitting with:', values);
-
     try {
       const result = await signIn('credentials', {
         redirect: false,

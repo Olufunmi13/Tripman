@@ -104,16 +104,11 @@ const ItineraryForm: React.FC<ItineraryFormProps> = ({
   });
 
   const handleAddEvent = async () => {
-    console.log('Form values before validation:', form.values);
     const isValid = form.validate();
     if (!isValid.hasErrors && activeDateIndex !== null) {
-      console.log('activeDateIndex:', activeDateIndex);
-console.log('startDate:', startDate);
-
       // Calculate the exact date for the event based on the activeDateIndex
       const selectedDate = new Date(startDate);
       selectedDate.setDate(startDate.getDate() + activeDateIndex!);
-      console.log('Calculated selectedDate:', selectedDate.toDateString());   
       const updatedEvent: UpdatedEvent = {
         ...form.values,
         startTime: form.values.startTime,
@@ -121,7 +116,6 @@ console.log('startDate:', startDate);
         location: form.values.location,
         date: selectedDate.toDateString(),
       };
-      console.log('Form values during validation:', updatedEvent);
       try {
         if (selectedEventIndex !== null && selectedDayIndex !== null) {
           // Update existing event in the database
@@ -185,7 +179,6 @@ console.log('startDate:', startDate);
   };
 
   const handleDateClicked = (index: number) => {
-    console.log('Date clicked:', index);
     setActiveDateIndex(index);
     setSelectedDayIndex(index);
     modalHandlers.open();

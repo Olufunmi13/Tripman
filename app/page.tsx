@@ -36,8 +36,6 @@ export default function Home() {
       </div>
     );
   }
-  console.log('Rendered session:', session);
-  console.log('User Image:', session.user?.image);
   return (
     <Container fluid className='h-full'>
       <div className="flex">

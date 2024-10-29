@@ -19,7 +19,6 @@ const TripForm: React.FC<TripDetailsFormProps> = ({ setPendingFiles, form }) => 
   const icon = <CalendarEvent size={22} strokeWidth={1} color={'black'} />;
 
   const handleCurrencyChange = (value: string) => {
-    console.log('Selected Currency:', value);
     form.setFieldValue('currency', value);
   };
 

@@ -4,7 +4,7 @@ import moment from 'moment-timezone';
 // import { auth } from '@/auth';
 export async function POST(req: Request) {
   const body = await req.json();
-  console.log('Request body:', body);
+
   const isoDateTime = convertToIsoDateTime(body.startTime);
     const parsedEstimatedCost = parseFloat(body.estimatedCost.replace(/[^\d.-]/g, ''));
   try {
@@ -25,7 +25,6 @@ export async function POST(req: Request) {
         date: new Date(body.date),
       },
     });
-    console.log('Date saved to database:', newEvent.date.toDateString());
 
     return NextResponse.json(
       { message: 'Event created successfully', trip: newEvent },

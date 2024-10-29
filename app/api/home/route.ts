@@ -46,9 +46,6 @@ export async function GET(req: Request, { trip }: { trip: string }) {
   };
 
   user.trips.forEach((trip) => {
-    console.log('user details: ', user.trips)
-    console.log('Processing trip:', trip.tripName);
-    console.log('Trip dropZone:', JSON.stringify(trip.dropZone));
     const tripStartDate = new Date(trip.startDate);
     if (tripStartDate >= today) {
       categorizedTrips.upcoming.push({
@@ -56,16 +53,12 @@ export async function GET(req: Request, { trip }: { trip: string }) {
         image: trip.dropZone && trip.dropZone.length > 0 ? trip.dropZone[0].path : null,
         
       });
-      console.log("Image paths:", categorizedTrips.upcoming.map(trip => trip.image));
     } else {
       categorizedTrips.past.push({
         ...trip,
         image: trip.dropZone && trip.dropZone.length > 0 ? trip.dropZone[0].path : null,
       });
-      console.log("Image paths:", categorizedTrips.past.map(trip => trip.image));
     }
-    console.log("Image paths:", categorizedTrips.upcoming.map(trip => trip.image));
-console.log("Image paths:", categorizedTrips.past.map(trip => trip.image));
   });
 
   return NextResponse.json({ trips: categorizedTrips });
