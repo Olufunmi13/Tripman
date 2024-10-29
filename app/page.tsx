@@ -1,12 +1,12 @@
 'use client';
 
-import { Button, Group, Loader, Text } from '@mantine/core';
+import { Button, Container, Group, Loader, Text } from '@mantine/core';
 import SideNav from './ui/sidebar';
 import Navbar from './ui/navbar';
 import { useEffect } from 'react';
 import { useSession } from 'next-auth/react';
 import { useRouter } from 'next/navigation';
-
+import TripsHome from './ui/home/page';
 
 export default function Home() {
   const router = useRouter();
@@ -21,10 +21,14 @@ export default function Home() {
   // While the session is loading, show a loading state
   if (status === 'loading') {
     return (
-      <div style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}>
+      <div
+        style={{ height: '100vh', display: 'flex', justifyContent: 'center', alignItems: 'center' }}
+      >
         <Group gap="sm" align="center">
           <Loader size="lg" variant="bars" />
-          <Text size="lg" fw={500}>Authenticating your session...</Text>
+          <Text size="lg" fw={500}>
+            Authenticating your session...
+          </Text>
           <Text size="sm" c="dimmed">
             Please wait while we verify your credentials. This might take a few seconds.
           </Text>
@@ -35,11 +39,13 @@ export default function Home() {
   console.log('Rendered session:', session);
   console.log('User Image:', session.user?.image);
   return (
-    <>
-          <SideNav />
-          <main>
-            <Navbar />
-          </main>
-    </>
+    <Container fluid className='h-full'>
+      <div className="flex">
+        <SideNav />
+        <main className="flex-grow">
+          <TripsHome />
+        </main>
+      </div>
+    </Container>
   );
 }

@@ -2,10 +2,13 @@
 import { Group, Text, SimpleGrid, Image } from '@mantine/core';
 import { Dropzone, DropzoneProps, IMAGE_MIME_TYPE, FileWithPath } from '@mantine/dropzone';
 import { useState } from 'react';
+import axios from 'axios';
+
 
 interface DropZoneProps extends Omit<DropzoneProps, 'onChange' | 'onDrop'> {
-  onChange: (files: FileWithPath[]) => void; // Define onChange
-  currentFiles: FileWithPath[];
+  // onChange: (files: FileWithPath[]) => void; // Define onChange
+  currentfiles: FileWithPath[];
+  onChange: (files: FileWithPath[]) => void;
 }
 
 export function DropZone({ onChange, ...props }: DropZoneProps) {
@@ -25,11 +28,42 @@ export function DropZone({ onChange, ...props }: DropZoneProps) {
   });
 
   // Define a separate onDrop handler
-  const handleDrop = (acceptedFiles: FileWithPath[]) => {
-    setFiles(acceptedFiles);
-    onChange(acceptedFiles); // Call the onChange prop with accepted files
-  };
+  
+const handleDrop = (acceptedFiles: FileWithPath[]) => {
+//   const dropZone = [];
+//   for (const file of acceptedFiles) {
+//     const formData = new FormData();
+//     formData.append('file', file);
 
+//     if (tripId !== undefined) {
+//       formData.append('tripId', tripId.toString()); // Add tripId to formData if it exists
+//     }
+//     try {
+//     const response = await axios.post('/api/upload', formData, {
+//       headers: {
+//         'Content-Type': 'multipart/form-data',
+//       },
+//     });
+//     if (response.data.success) {
+//       dropZone.push({
+//         id: response.data.fileId,
+//         path: file.path,
+//         originalName: file.name,
+//         mimeType: file.type,
+//         tripId,
+//       });
+//     } else {
+//       console.error('File upload unsuccessful:', response.data.message);
+//     }
+//   } catch (error) {
+//     console.error('Error uploading file:', error);
+//   }
+// }
+
+  setFiles(acceptedFiles);
+  onChange(acceptedFiles);
+  console.log('Files to be sent to API:', acceptedFiles);
+};
   return (
     <Dropzone
       onDrop={handleDrop}

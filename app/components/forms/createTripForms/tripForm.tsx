@@ -7,12 +7,15 @@ import { CalendarEvent } from 'tabler-icons-react';
 import { DropZone } from './dropzone';
 import { FormValues } from '@/app/interface';
 import classes from '@/styles/Form.module.css';
+import { FileWithPath } from '@mantine/dropzone';
+
 
 interface TripDetailsFormProps {
   form: UseFormReturnType<FormValues>;
+  setPendingFiles: (files: FileWithPath[]) => void;
 }
 
-const TripForm: React.FC<TripDetailsFormProps> = ({ form }) => {
+const TripForm: React.FC<TripDetailsFormProps> = ({ setPendingFiles, form }) => {
   const icon = <CalendarEvent size={22} strokeWidth={1} color={'black'} />;
 
   const handleCurrencyChange = (value: string) => {
@@ -23,8 +26,9 @@ const TripForm: React.FC<TripDetailsFormProps> = ({ form }) => {
   return (
     <>
       <DropZone
-        currentFiles={form.values.dropZone}
-        onChange={(files) => form.setFieldValue('dropZone', files)}
+        currentfiles={form.values.dropZone}
+        onChange={setPendingFiles}
+        // onChange={(files) => form.setFieldValue('dropZone', files)}
       />
 
       {/* Display error message for dropzone */}

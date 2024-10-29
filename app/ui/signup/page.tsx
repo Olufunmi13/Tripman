@@ -43,6 +43,7 @@ export default function Signup() {
     },
   });
   const [loading, setLoading] = useState(false);
+  const [error, setError] = useState<string | null>(null);
 
   const handleSubmit = async (values: SignUpValues) => {
     setLoading(true);
@@ -54,15 +55,26 @@ export default function Signup() {
         username: values.username,
         password: values.password,
         email: values.email,
-        action: 'signup', 
+        action: 'signup',
       });
-  
-      if (!result?.ok) {
-        alert('Please enter your credentials');
+
+      if (result?.error) {
+        console.error('Error received from signIn:', result.error);
+        setError(`An unknown error occurred: ${result.error}`);
+        switch (result?.error) {
+          case 'Configuration':
+            setError('Email already exists');
+            break;
+          case 'CredentialsSignin':
+            setError('Username has already been taken by someone');
+            break;
+          default:
+            setError('An unexpected error occurred. Please try again later.');
+        }
       } else {
-        alert('Account created successfully. Please log in.');
-        router.push('/ui/login'); // Redirect to login page after signup
-        
+        setError(null); // Clear error if login is successful
+        // Redirect or perform other actions on successful login
+        router.push('/ui/login');
       }
     } catch (error) {
       console.error('Signup error:', error);
@@ -83,6 +95,11 @@ export default function Signup() {
       <Text ta="center" c="dimmed">
         Begin by creating a new account
       </Text>
+      {error && (
+        <Text c="red" size="sm" ta="center">
+          {error}
+        </Text>
+      )}
       <form onSubmit={form.onSubmit(handleSubmit)}>
         <Paper shadow="md" p={30} mt={20} radius="md">
           <TextInput

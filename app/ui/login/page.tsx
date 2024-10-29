@@ -24,14 +24,14 @@ interface LoginFormValues {
 
 export default function Login() {
   const form = useForm<LoginFormValues>({
-    mode: 'uncontrolled',
+    mode: 'controlled',
     initialValues: {
       username: '',
       password: '',
     },
     validate: {
       username: isNotEmpty('Name is required'),
-      password: hasLength({ min: 6, max: 10 }, 'Password must be 6-12 characters long'),
+      password: hasLength({ min: 6, max: 12 }, 'Password must be 6-12 characters long'),
     },
   });
 
@@ -42,28 +42,32 @@ export default function Login() {
   const handleSubmit = async (values: LoginFormValues) => {
     setLoading(true);
     setError(null);
+    console.log('Submitting with:', values);
+
     try {
-      const result = 
-      await signIn('credentials', {
+      const result = await signIn('credentials', {
         redirect: false,
         username: values.username,
         password: values.password,
         provider: 'credentials',
         action: 'login',
-        callbackUrl: '/'
       });
 
-      if (!result?.ok) {
-        if (result?.error === 'user_not_found') {
-          setError('User not found. Redirecting to signup page.');
-          router.push('/ui/signup');
-        } else if (result?.error === 'invalid_credentials') {
-          setError('Invalid username or password.');
-        } else {
-          setError('An unexpected error occurred. Please try again.');
+      if (result?.error) {
+        setError(`An unknown error occurred: ${result.error}`);
+        switch (result?.error) {
+          case 'Configuration':
+            setError('Check your username or password');
+            break;
+          case 'invalid_password':
+            setError('Incorrect password. Please try again.');
+            break;
+          default:
+            setError('An unexpected error occurred. Please try again later.');
         }
       } else {
-        // User exists, redirect to home page
+        setError(null); // Clear error if login is successful
+        // Redirect or perform other actions on successful login
         router.push('/');
       }
     } catch (err) {
@@ -85,19 +89,14 @@ export default function Login() {
       <Text ta="center" fw={700} className="my-3">
         Welcome back!
       </Text>
-      <form
-        onSubmit={(event) => {
-          event.preventDefault();
-          handleSubmit(form.values);
-        }}
-      >
+      <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
         <Paper shadow="md" p={30} mt={20} radius="md">
           <TextInput
             {...form.getInputProps('username')}
             label="Username"
             classNames={classes}
             mt="md"
-            autoComplete="nope"
+            autoComplete="off"
             className={`${classes.input} ${
               form.values.username.trim() || form.isTouched('username') ? classes.floating : ''
             }`}
@@ -107,13 +106,13 @@ export default function Login() {
             label="Password"
             mt="md"
             classNames={classes}
-            autoComplete="nope"
+            autoComplete="off"
             className={`${classes.input} ${
               form.values.password.trim() || form.isTouched('password') ? classes.floating : ''
             } ${classes.purpleBorder}`}
           />
           {error && (
-            <Text color="red" size="sm">
+            <Text c="red" size="sm" ta='center'>
               {error}
             </Text>
           )}

@@ -9,6 +9,7 @@ import { Dots, MessageDots, Plus, ThumbDown, ThumbUp } from 'tabler-icons-react'
 import { IconLocationItin, IconCostItin } from '@/app/customIcons/svgIcons';
 import { formatTime } from '@/app/utils/utils';
 import { useForm } from '@mantine/form';
+import axios from 'axios';
 import {
   validateActivity,
   validateStartTime,
@@ -17,10 +18,22 @@ import {
 } from '@/app/utils/validation';
 
 interface ItineraryFormProps extends DaySelectorProps {
+  tripId: number;
   budget: number;
   onTotalCostChange: (totalCost: number) => void;
 }
-const ItineraryForm: React.FC<ItineraryFormProps> = ({ startDate, endDate, currency, budget, onTotalCostChange }) => {
+
+interface UpdatedEvent extends Event {
+  date: string;
+}
+const ItineraryForm: React.FC<ItineraryFormProps> = ({
+  tripId,
+  startDate,
+  endDate,
+  currency,
+  budget,
+  onTotalCostChange,
+}) => {
   const [activeDateIndex, setActiveDateIndex] = useState<number | null>(null);
   const [itinerary, setItinerary] = useState<DayData[]>([]);
   const [modalOpened, modalHandlers] = useDisclosure(false);
@@ -36,14 +49,17 @@ const ItineraryForm: React.FC<ItineraryFormProps> = ({ startDate, endDate, curre
 
   const calculateTotalCost = () => {
     const sum = itinerary.reduce((acc, day) => {
-      return acc + day.events.reduce((dayAcc, event) => {
-        const numericValue = parseFloat(event.estimatedCost.replace(/[^\d.-]/g, '')) || 0;
-        return dayAcc + numericValue;
-      }, 0);
+      return (
+        acc +
+        (day.events ? day.events.reduce((dayAcc, event) => {
+          const numericValue = parseFloat(event.estimatedCost.replace(/[^\d.-]/g, '')) || 0;
+          return dayAcc + numericValue;
+        }, 0) : 0)
+      );
     }, 0);
     setTotalCost(sum);
     onTotalCostChange(sum);
-  }
+  };
   const handleCountup = () => {
     setCountup((prevCount) => prevCount + 1);
   };
@@ -87,60 +103,91 @@ const ItineraryForm: React.FC<ItineraryFormProps> = ({ startDate, endDate, curre
     },
   });
 
-  const handleAddEvent = () => {
+  const handleAddEvent = async () => {
     console.log('Form values before validation:', form.values);
     const isValid = form.validate();
-    console.log('Validation result:', isValid);
-    
     if (!isValid.hasErrors && activeDateIndex !== null) {
-      console.log('No errors found');
-      const updatedEvent: Event = {
-        activity: form.values.activity,
+      console.log('activeDateIndex:', activeDateIndex);
+console.log('startDate:', startDate);
+
+      // Calculate the exact date for the event based on the activeDateIndex
+      const selectedDate = new Date(startDate);
+      selectedDate.setDate(startDate.getDate() + activeDateIndex!);
+      console.log('Calculated selectedDate:', selectedDate.toDateString());   
+      const updatedEvent: UpdatedEvent = {
+        ...form.values,
         startTime: form.values.startTime,
         estimatedCost: form.values.estimatedCost,
         location: form.values.location,
+        date: selectedDate.toDateString(),
       };
-      console.log('Updated event object:', updatedEvent);
-  
-      setItinerary((prev) => {
-        const newItinerary = [...prev];
-        
-        if (!newItinerary[activeDateIndex]) {
-          newItinerary[activeDateIndex] = { day: `Day ${activeDateIndex + 1}`, events: [] };
-        }
-  
-        // Check if we're editing an existing event
+      console.log('Form values during validation:', updatedEvent);
+      try {
         if (selectedEventIndex !== null && selectedDayIndex !== null) {
-          newItinerary[selectedDayIndex].events[selectedEventIndex] = updatedEvent;
+          // Update existing event in the database
+          const eventId = itinerary[selectedDayIndex].events[selectedEventIndex].id;
+          await axios.put(`/api/events/${eventId}`, updatedEvent);
+          updatedEvent.id = eventId;
+
+          // Update the state with the modified event
+          setItinerary((prev) => {
+            const newItinerary = [...prev];
+            newItinerary[selectedDayIndex].events[selectedEventIndex] = updatedEvent;
+            return newItinerary;
+          });
         } else {
-          // Add a new event only if it doesn't already exist
-          const existingEvent = newItinerary[activeDateIndex].events.find(e => 
-            e.activity === updatedEvent.activity &&
-            e.startTime === updatedEvent.startTime &&
-            e.location === updatedEvent.location &&
-            e.estimatedCost === updatedEvent.estimatedCost
-          );
-          
-          if (!existingEvent) {
-            newItinerary[activeDateIndex].events.push(updatedEvent);
-          }
+          // Add a new event if it doesn't already exist
+          const response = await axios.post('/api/events', {
+            ...updatedEvent,
+            tripId: tripId,
+          });
+
+          // Add the newly created event ID to the object
+          updatedEvent.id = response.data.id;
+
+          setItinerary((prev) => {
+            const newItinerary = [...prev];
+
+            if (!newItinerary[activeDateIndex]) {
+              newItinerary[activeDateIndex] = { day: `Day ${activeDateIndex + 1}`, events: [] };
+            }
+
+            // Check if the event already exists
+            const existingEventIndex = newItinerary[activeDateIndex].events.findIndex(
+              (e) =>
+                e.activity === updatedEvent.activity &&
+                e.startTime === updatedEvent.startTime &&
+                e.location === updatedEvent.location &&
+                e.estimatedCost === updatedEvent.estimatedCost
+            );
+
+            if (existingEventIndex === -1) {
+              // If the event doesn't exist, add it
+              newItinerary[activeDateIndex].events.push(updatedEvent);
+            } else {
+              // If the event exists, update it
+              newItinerary[activeDateIndex].events[existingEventIndex] = updatedEvent;
+            }
+            return newItinerary;
+          });
         }
-  
-        return newItinerary;
-      });
-  
-      setSelectedEventIndex(null);
-      setSelectedDayIndex(null);
-  
-      form.reset();
-      modalHandlers.close();
+
+        setSelectedEventIndex(null);
+        setSelectedDayIndex(null);
+        form.reset();
+        modalHandlers.close();
+      } catch (error) {
+        console.error('Error while saving event:', error);
+      }
     } else {
       console.log('Errors found:', isValid.errors);
     }
   };
 
   const handleDateClicked = (index: number) => {
+    console.log('Date clicked:', index);
     setActiveDateIndex(index);
+    setSelectedDayIndex(index);
     modalHandlers.open();
   };
 
@@ -173,7 +220,7 @@ const ItineraryForm: React.FC<ItineraryFormProps> = ({ startDate, endDate, curre
       {activeDateIndex !== null && (
         <div>
           {itinerary[activeDateIndex]?.events.map((event, idx) => (
-            <Timeline color="grape" active={-1} lineWidth={2} bulletSize={12}>
+            <Timeline color="grape" active={-1} lineWidth={2} bulletSize={12} key={`${idx}-${event.id || event.activity}`}>
               <Timeline.Item lineVariant="dotted">
                 <Card key={idx} shadow="sm" padding="lg" style={{ marginTop: '10px' }}>
                   <Group justify="space-between">

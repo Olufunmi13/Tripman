@@ -13,6 +13,8 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
+// prisma/schema.prisma
+
 model User {
   id            Int      @id @default(autoincrement())
   username      String  @unique
@@ -24,8 +26,6 @@ model User {
   updatedAt     DateTime @updatedAt
 }
 
-
-
 model Trip {
   id         Int       @id @default(autoincrement())
   user        User      @relation(fields: [userId], references: [id])
@@ -35,8 +35,8 @@ model Trip {
   endDate    DateTime
   budget     Float
   currency    String
-  dropZone       String?   // Stores the path or URL of the uploaded file
-  events     Event[]   // Relation to multiple events
+  dropZone    File[]
+  events     Event[]
   createdAt  DateTime  @default(now())
   updatedAt  DateTime  @updatedAt
 }
@@ -46,9 +46,19 @@ model Event {
   tripId        Int
   trip          Trip     @relation(fields: [tripId], references: [id])
   activity      String
-  time          DateTime
+  startTime     DateTime
   location      String
   estimatedCost Float
+  date          DateTime
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
+}
+
+model File{
+  id        Int       @id @default(autoincrement())
+  tripId        Int
+  trip          Trip     @relation(fields: [tripId], references: [id])
+  originalName String
+  mimeType  String
+  path      String   
 }

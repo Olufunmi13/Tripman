@@ -19,13 +19,18 @@ import TripForm from './tripForm';
 import { BudgetCard } from './budgetCard';
 import { CalendarEvent } from 'tabler-icons-react';
 import axios from 'axios';
+import { useRouter } from 'next/navigation';
+import { FileWithPath } from '@mantine/dropzone';
 
 const steps = ['Step 1: Trip Details', 'Step 2: Itinerary Information'];
 
 export default function CreateTripForm() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(0);
+  const [tripId, setTripId] = useState<number | undefined>(undefined);
   const [formData, setFormData] = useState<FormValues | null>(null);
   const [totalCost, setTotalCost] = useState<number>(0);
+  const [pendingFiles, setPendingFiles] = useState<FileWithPath[]>([]);
 
   const handleTotalCostChange = (newTotalCost: number) => {
     setTotalCost(newTotalCost);
@@ -42,7 +47,7 @@ export default function CreateTripForm() {
       itinerary: {},
     },
     validate: {
-      dropZone: validateDropzone,
+      dropZone: () => validateDropzone(pendingFiles),
       trip: validateTrip,
       startDate: validateStartDate,
       endDate: (value) => validateEndDate(value, form.values.startDate),
@@ -67,24 +72,58 @@ export default function CreateTripForm() {
           endDate: form.values.endDate,
           budget: form.values.budget,
           currency: form.values.currency,
-          dropZone: form.values.dropZone,
+          // dropZone: form.values.dropZone,
         };
-  
+
         try {
           const response = await axios.post('/api/trips', requestData);
           console.log('API Response:', response.data);
-  
+          setTripId(response.data.tripId);
+          await uploadFiles(response.data.tripId); 
           // If the request is successful, proceed to the next step
           setCurrentStep(1);
         } catch (error) {
           console.error('Error saving trip data:', error);
           // Handle error (e.g., show a notification)
         }
-        setCurrentStep(1);
       } else {
         console.log('Final Submission:', { ...formData, ...form.values });
+        router.push('/');
       }
     }
+  };
+
+  // Function to upload files from DropZone component
+  const uploadFiles = async (tripId: number ) => {
+    const uploadedFiles = [];
+
+    for (const file of pendingFiles) {
+      const formData = new FormData();
+      formData.append('file', file);
+      formData.append('tripId', tripId.toString());
+
+      try {
+        const response = await axios.post('/api/upload', formData, {
+          headers: { 'Content-Type': 'multipart/form-data' },
+        });
+
+        if (response.data.success) {
+          uploadedFiles.push({
+            id: response.data.fileId,
+            path: file.path,
+            originalName: file.name,
+            mimeType: file.type,
+            tripId,
+          });
+        } else {
+          console.error('File upload unsuccessful:', response.data.message);
+        }
+      } catch (error) {
+        console.error('Error uploading file:', error);
+      }
+    }
+
+    console.log('Uploaded files:', uploadedFiles);
   };
 
   return (
@@ -97,7 +136,7 @@ export default function CreateTripForm() {
         }}
       >
         <div className="w-full sm:space-y-4">
-          {currentStep === 0 && <TripForm form={form} />}
+          {currentStep === 0 && <TripForm form={form} setPendingFiles={setPendingFiles} />}
 
           {currentStep === 1 && (
             <>
@@ -131,18 +170,20 @@ export default function CreateTripForm() {
                   currency={formData?.currency || ''}
                   totalCost={totalCost}
                 />
-
-                <ItineraryForm
-                  startDate={formData?.startDate}
-                  endDate={formData?.endDate}
-                  currency={formData?.currency || ' '}
-                  budget={
-                    typeof formData?.budget === 'string'
-                      ? parseFloat(formData.budget)
-                      : formData?.budget || 0
-                  }
-                  onTotalCostChange={handleTotalCostChange}
-                />
+                {tripId && (
+                  <ItineraryForm
+                    tripId={tripId}
+                    startDate={formData?.startDate}
+                    endDate={formData?.endDate}
+                    currency={formData?.currency || ' '}
+                    budget={
+                      typeof formData?.budget === 'string'
+                        ? parseFloat(formData.budget)
+                        : formData?.budget || 0
+                    }
+                    onTotalCostChange={handleTotalCostChange}
+                  />
+                )}
               </div>
             </>
           )}

@@ -18,7 +18,7 @@ export default function Navbar() {
         </Link>
       </div>
 
-      <div className="hidden sm:flex sm:gap-1 sm:items-center sm:justify-center sm:mr-1">
+      <div className="hidden sm:flex sm:gap-1 sm:items-center sm:justify-center sm:mr-5">
         <Link href="/ui/createtrip">
           <button className="flex items-center px-4 py-2 rounded-md bg-purple-500 text-white hover:bg-purple-600 transition-colors duration-200 gap-1">
             <CirclePlus />
@@ -26,7 +26,6 @@ export default function Navbar() {
           </button>
         </Link>
         <Avatar src={null} alt="initials" color="indigo">{session?.user?.image || Avatarr.src}</Avatar>
-        {/* <Avatar src={session?.user?.image || Avatarr.src} alt="initials" color="indigo" /> */}
       </div>
     </nav>
   );

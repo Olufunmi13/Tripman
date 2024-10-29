@@ -1,5 +1,5 @@
-export const validateDropzone = (value: File[]): string | null => {
-  return value.length === 0 ? 'please upload an image' : null;
+export const validateDropzone = (pendingFiles: File[]): string | null => {
+  return pendingFiles && pendingFiles.length === 0 ? 'please upload an image' : null;
 };
 
 export const validateTrip = (value: string): string | null => {

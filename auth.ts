@@ -1,5 +1,5 @@
 import NextAuth from 'next-auth';
-import  NextAuthOptions  from 'next-auth';
+import { AuthError } from 'next-auth';
 import Credentials from 'next-auth/providers/credentials';
 import { PrismaAdapter } from '@auth/prisma-adapter';
 import { prisma } from '@/app/lib/prisma';
@@ -21,6 +21,7 @@ async function compareHash(plainTextPassword: string, hashedPassword: string): P
 }
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
+  debug: true,
   adapter: PrismaAdapter(prisma),
   providers: [
     Credentials({
@@ -37,12 +38,14 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
           if (credentials.action === 'signup') {
             const existingUser = await prisma.user.findUnique({
               where: { email: credentials?.email as string },
+              
             });
-
+            console.log(existingUser);
             if (existingUser) {
-              throw new Error('Email already exists');
+              throw new AuthError('Email already exists', { code: 'Email_already_exist' });
+              console.error(Error);
             }
-
+            
             const hashedPassword = await bcrypt.hash(credentials.password as string, 10);
             const image = String(credentials.username).charAt(0).toUpperCase();
 
@@ -60,33 +63,35 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               email: String(newUser.email),
               image: newUser.image,
             };
-          } else {
+          } else if(credentials.action === 'login') {
+            
+            console.log('Attempting to log in with:', credentials);
+          
+
             const user = await prisma.user.findUnique({
               where: { username: credentials?.username as string },
             });
-
             if (!user) {
-              throw new Error('user_not_found');
+              console.log('User found:', user);
+              throw new AuthError('User not found', { code: 'user_not_found' });
             }
 
             // Check if password matches
             const isValid = await compareHash(credentials.password as string, user.password);
+            console.log(isValid);
             if (!isValid) {
-              throw new Error('Invalid password');
+              throw new AuthError('Invalid password', { code: 'invalid_credentials' });
             }
 
             return { id: String(user.id), username: user.username, email: String(user.email), image: user.image};
           }
-        } catch (error: unknown) {
+        } catch (error) {
           console.error('Authorization error:', error);
-          // return null;
-          // throw error;
-          if (error instanceof Error) {
-            throw error;
-          } else {
-            throw new Error('An unexpected error occurred');
-          }
-        }
+          if (error instanceof AuthError) {
+            throw error; // This will be caught on the client side
+          } return null; 
+      }
+          return null;
       },
     }),
   ],

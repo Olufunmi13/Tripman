@@ -27,3 +27,30 @@ export const getDatesBetween = (startDate: Date, endDate: Date): string[] => {
   
     return dates;
 };
+
+// app/utils/utils.ts
+
+export function formatTripDates(startDate: Date | null | undefined, endDate: Date | null | undefined): string {
+  if (!startDate || !endDate) {
+      return 'N/A';
+  }
+
+  // Ensure startDate and endDate are Date objects
+  const start = new Date(startDate);
+  const end = new Date(endDate);
+
+  if (isNaN(start.getTime()) || isNaN(end.getTime())) {
+      return 'Invalid dates';
+  }
+
+  const startMonth = start.toLocaleString('default', { month: 'long' });
+  const endMonth = end.toLocaleString('default', { month: 'long' });
+  const startDay = start.getDate();
+  const endDay = end.getDate();
+
+  if (start.getFullYear() === end.getFullYear()) {
+      return `${startMonth} ${startDay}-${endDay}`;
+  } else {
+      return `${startMonth} ${startDay}, ${start.getFullYear()} - ${endMonth} ${endDay}, ${end.getFullYear()}`;
+  }
+}
