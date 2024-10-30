@@ -40,6 +40,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               where: { email: credentials?.email as string },
               
             });
+            console.log(existingUser);
             if (existingUser) {
               throw new AuthError('Email already exists', { code: 'Email_already_exist' });
               console.error(Error);
@@ -63,15 +64,18 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
               image: newUser.image,
             };
           } else if(credentials.action === 'login') {
+            console.log('Attempting to log in with:', credentials);
             const user = await prisma.user.findUnique({
               where: { username: credentials?.username as string },
             });
             if (!user) {
+              console.log('User found:', user);
               throw new AuthError('User not found', { code: 'user_not_found' });
             }
 
             // Check if password matches
             const isValid = await compareHash(credentials.password as string, user.password);
+            console.log(isValid);
             if (!isValid) {
               throw new AuthError('Invalid password', { code: 'invalid_credentials' });
             }
