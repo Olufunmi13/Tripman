@@ -48,7 +48,6 @@ export default function Login() {
         redirect: false,
         username: values.username,
         password: values.password,
-        provider: 'credentials',
         action: 'login',
       });
 
