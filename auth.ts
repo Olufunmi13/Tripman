@@ -43,7 +43,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
             console.log(existingUser);
             if (existingUser) {
               console.error(Error);
-              throw new AuthError('Email already exists', { code: 'Email_already_exist' });
+              throw new AuthError('Email already exists', { code: 'email_already_exist' });
             }
             
             const hashedPassword = await bcrypt.hash(credentials.password as string, 10);
