@@ -60,12 +60,25 @@ export default function Signup() {
       if (result?.error) {
         console.error('Error received from signIn:', result.error);
         setError(`An unknown error occurred: ${result.error}`);
+        // switch (result?.error) {
+        //   case 'Configuration':
+        //     setError('Email already exists');
+        //     break;
+        //   case 'CredentialsSignin':
+        //     setError('Username has already been taken by someone');
+        //     break;
+        //   default:
+        //     setError('An unexpected error occurred. Please try again later.');
+        // }
         switch (result?.error) {
-          case 'Configuration':
-            setError('Email already exists');
+          case 'email_already_exist':
+            setError('This email is already in use. Please try logging in.');
             break;
-          case 'CredentialsSignin':
-            setError('Username has already been taken by someone');
+          case 'user_not_found':
+            setError('No account found with this username.');
+            break;
+          case 'invalid_password':
+            setError('Incorrect password. Please try again.');
             break;
           default:
             setError('An unexpected error occurred. Please try again later.');
