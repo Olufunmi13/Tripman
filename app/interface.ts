@@ -1,4 +1,3 @@
-
 export interface FormValues {
     dropZone: File[];
     trip: string;
@@ -16,7 +15,7 @@ export interface DateButtonProps {
     onClick: () => void;
 }
 export interface Event {
-    id?: number;
+    id?: string;
     activity: string;
     startTime: string;
     location: string;
@@ -35,13 +34,13 @@ export interface DaySelectorProps {
 }
 
 export interface Trip {
-    id: number;
+    id: string;
     tripName: string;
     startDate: Date;
     endDate: Date;
     dropZone: { path: string }[];
     events: {
-        id: number;
+        _id: string;
         createdAt: Date;
         updatedAt: Date;
         tripId: number;

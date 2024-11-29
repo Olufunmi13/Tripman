@@ -21,7 +21,7 @@ export async function POST(req: Request) {
     // Create a new trip without dropZone
     const newTrip = await prisma.trip.create({
       data: {
-        user: { connect: { id: Number(session.user.id) } },
+        user: { connect: { id: session.user.id } },
         tripName,
         startDate: new Date(startDate),
         endDate: new Date(endDate),

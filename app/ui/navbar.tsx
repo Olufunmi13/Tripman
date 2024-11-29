@@ -25,7 +25,7 @@ export default function Navbar() {
             Create Trip
           </button>
         </Link>
-        <Avatar src={null} alt="initials" color="indigo">{session?.user?.image || Avatarr.src}</Avatar>
+        <Avatar alt="initials" color="indigo">{session?.user?.image || Avatarr.src}</Avatar>
       </div>
     </nav>
   );

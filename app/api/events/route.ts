@@ -55,7 +55,7 @@ function convertToIsoDateTime(timeString: string): Date {
 
 export async function PUT(req: Request) {
   const url = new URL(req.url);
-  const eventId = parseInt(url.searchParams.get('id') || '', 10);
+  const eventId = url.searchParams.get('id');
 
   if (!eventId) {
     return NextResponse.json({ error: 'Invalid event ID' }, { status: 400 });

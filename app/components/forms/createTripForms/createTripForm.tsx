@@ -71,7 +71,6 @@ export default function CreateTripForm() {
           endDate: form.values.endDate,
           budget: form.values.budget,
           currency: form.values.currency,
-          // dropZone: form.values.dropZone,
         };
 
         try {

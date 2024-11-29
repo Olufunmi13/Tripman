@@ -6,7 +6,7 @@ import path from 'path';
 export async function POST(request: Request) {
   const formData = await request.formData();
   const file = formData.get('file');
-  const tripId = parseInt(formData.get('tripId') as string, 10);
+  const tripId = formData.get('tripId') as string;
   if (!(file instanceof File)) {
     return NextResponse.json({ error: 'No file provided' }, { status: 400 });
   }

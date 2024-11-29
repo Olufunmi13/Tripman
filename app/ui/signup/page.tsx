@@ -44,58 +44,7 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-
-  // const handleSubmit = async (values: SignUpValues) => {
-  //   setLoading(true);
-  //   console.log('Values before submission:', values);
-  //   try {
-  //     const result = await signIn('credentials', {
-  //       redirect: false,
-  //       username: values.username,
-  //       password: values.password,
-  //       email: values.email,
-  //       action: 'signup',
-  //     });
-  //     console.log(result);
-
-  //     if (result?.error) {
-  //       console.error('Error received from signIn:', result.error);
-  //       setError(`An unknown error occurred: ${result.error}`);
-  //       // switch (result?.error) {
-  //       //   case 'Configuration':
-  //       //     setError('Email already exists');
-  //       //     break;
-  //       //   case 'CredentialsSignin':
-  //       //     setError('Username has already been taken by someone');
-  //       //     break;
-  //       //   default:
-  //       //     setError('An unexpected error occurred. Please try again later.');
-  //       // }
-  //       switch (result?.error) {
-  //         case 'email_already_exist':
-  //           setError('This email is already in use. Please try logging in.');
-  //           break;
-  //         case 'user_not_found':
-  //           setError('No account found with this username.');
-  //           break;
-  //         case 'invalid_password':
-  //           setError('Incorrect password. Please try again.');
-  //           break;
-  //         default:
-  //           setError('An unexpected error occurred. Please try again later.');
-  //       }
-  //     } else {
-  //       setError(null); // Clear error if login is successful
-  //       // Redirect or perform other actions on successful login
-  //       router.push('/ui/login');
-  //     }
-  //   } catch (error) {
-  //     console.error('Signup error:', error);
-  //     alert('An error occurred while creating the account. Please try again.');
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // };
+  
   const handleSubmit = async (values: SignUpValues) => {
     setLoading(true);
     console.log('Values before submission:', values);
@@ -107,7 +56,7 @@ export default function Signup() {
         email: values.email,
         action: 'signup',
       });
-      console.log(result);
+      // console.log(result);
       
       if (result?.error) {
         console.error('Error received from signIn:', result.error);

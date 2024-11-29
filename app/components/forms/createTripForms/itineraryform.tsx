@@ -119,7 +119,13 @@ const ItineraryForm: React.FC<ItineraryFormProps> = ({
       try {
         if (selectedEventIndex !== null && selectedDayIndex !== null) {
           // Update existing event in the database
-          const eventId = itinerary[selectedDayIndex].events[selectedEventIndex].id;
+          const eventToUpdate = itinerary[selectedDayIndex].events[selectedEventIndex].id;
+          console.log(eventToUpdate)
+          // if (!eventToUpdate) {
+          //   console.error('Event not found in itinerary');
+          //   throw new Error('Event not found in itinerary');
+          // }
+          const eventId = eventToUpdate;
           await axios.put(`/api/events/${eventId}`, updatedEvent);
           updatedEvent.id = eventId;
 
@@ -137,7 +143,9 @@ const ItineraryForm: React.FC<ItineraryFormProps> = ({
           });
 
           // Add the newly created event ID to the object
-          updatedEvent.id = response.data.id;
+          updatedEvent.id = response.data._id;
+
+          console.log(updatedEvent.id);
 
           setItinerary((prev) => {
             const newItinerary = [...prev];

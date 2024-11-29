@@ -10,7 +10,7 @@ export async function GET(req: Request, { trip }: { trip: string }) {
 
   const userId = session.user.id as string;
   const user = await prisma.user.findUnique({
-    where: { id: parseInt(userId) },
+    where: { id: userId },
     include: {
       trips: {
         select: {
@@ -65,13 +65,13 @@ export async function GET(req: Request, { trip }: { trip: string }) {
 }
 
 interface Trip {
-  id: number;
+  id: string;
   tripName: string;
   startDate: Date;
   endDate: Date;
   dropZone: [{ path: string }];
   events: {
-    id: number;
+    id: string;
     createdAt: Date;
     updatedAt: Date;
     tripId: number;
