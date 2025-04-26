@@ -77,24 +77,25 @@ export default function Login() {
   };
 
   return (
-    <Container size={420} my={90} className="overflow-hidden">
-      <Group justify="center" className="my-2">
-        <span className="w-10 h-10 rounded-full bg-gradient-to-r from-[#B68AFF] to-[#3E16B6]"></span>
-        <Text size="lg" fw={700}>
+    <Container size={420} my={40} className="overflow-hidden">
+      <Group justify="center" className="my-2 ml-4 mr-2">
+        <span className="w-10 h-10 md:h-[4.5rem] md:w-[4.5rem] rounded-full bg-gradient-to-r from-[#B68AFF] to-[#3E16B6]"></span>
+        <Text fw={600} className='text-6xl'>
           TripHub
         </Text>
       </Group>
-      <Text ta="center" fw={700} className="my-3">
+      <Text ta="center" fw={600} className="my-8 ml-4 text-2xl">
         Welcome back!
       </Text>
       <form onSubmit={form.onSubmit((values) => handleSubmit(values))}>
-        <Paper shadow="md" p={30} mt={20} radius="md">
+        <Paper mt={20} radius="md">
           <TextInput
             {...form.getInputProps('username')}
-            label="Username"
+            label="User name"
             classNames={classes}
             mt="md"
             autoComplete="off"
+            variant='filled'
             className={`${classes.input} ${
               form.values.username.trim() || form.isTouched('username') ? classes.floating : ''
             }`}
@@ -105,6 +106,7 @@ export default function Login() {
             mt="md"
             classNames={classes}
             autoComplete="off"
+            variant='filled'
             className={`${classes.input} ${
               form.values.password.trim() || form.isTouched('password') ? classes.floating : ''
             } ${classes.purpleBorder}`}
@@ -114,14 +116,14 @@ export default function Login() {
               {error}
             </Text>
           )}
-          <Anchor component="button" size="sm" ta="right" c="#7539d6">
+          <Anchor component="button" size="sm" ta="right" c="#7539d6" className="ml-44 sm:ml-[16.5rem] mt-4">
             Forgot password?
           </Anchor>
-          <Button fullWidth mt="xl" color="#7539d6" type="submit" loading={loading}>
+          <Button className='w-full sm:w-[357px] h-14 rounded-lg sm:ml-6 mt-3' color="#7539d6" type="submit" loading={loading}>
             Log in
           </Button>
-          <Group justify="space-between">
-            <Text c="dimmed" size="sm" ta="center" mt={5}>
+          <Group justify="space-between" className='mt-8'>
+            <Text c="dimmed" size="md" ta="center" className='ml-3'>
               New to TripHub?{' '}
             </Text>
             <div className="flex justify-center items-center">

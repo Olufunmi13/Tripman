@@ -66,7 +66,6 @@ export default function NavLinks() {
         <Button variant="transparent"
           className="w-full h-12  flex items-center justify-center gap-2 rounded-md text-black bg-gray-50 p-3 text-sm font-medium hover:bg-sky-100 hover:text-blue-600"
           onClick={() => {
-            // e.preventDefault();
             handleLogout();
           }}
         >

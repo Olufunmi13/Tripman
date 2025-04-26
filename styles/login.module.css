@@ -7,17 +7,25 @@
   outline-offset: -1px;
 }
 
-/* .input {
-  position: relative;
-} */
+.input {
+  background: #F9F9F9;
+  width: 368px;
+  height: 56px;
+  border-radius: 8px;
+  margin-left: 11px;
+  /* margin-top: -27px; */
+  ;
+}
 
 .label {
   position: absolute;
+  font-size: 14px;
+  font-weight: 400;
   z-index: 2;
-  top: 10px;
-  left: 1rem;
+  top: 20px;
+  left: 27px;
   pointer-events: none;
-  color: gray;
+  color: rgb(68, 67, 67);
   transition: transform 150ms ease, font-size 150ms ease, color 150ms ease;
 }
 
@@ -34,4 +42,14 @@
 .purpleBorder input:focus {
   border: 2px solid #7539d6 !important;
   outline: none;
+}
+
+
+
+/* New styles for mobile devices */
+@media screen and (max-width: 768px) {
+  .input {
+    width: 100%;
+   margin-left: 0;
+  }
 }
