@@ -13,6 +13,7 @@
   height: 56px;
   border-radius: 8px;
   margin-left: 11px;
+  margin-right: 11px;
   /* margin-top: -27px; */
   ;
 }
@@ -32,7 +33,7 @@
 /* Floating label when input is focused or has a value */
 .input:focus-within .label,
 .floating .label {
-  transform: translateY(-18px);
+  transform: translateY(-25px);
   font-size: 0.8rem;
   font-weight: 500;
   color: #7539d6;

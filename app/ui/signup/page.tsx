@@ -44,7 +44,7 @@ export default function Signup() {
   });
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  
+
   const handleSubmit = async (values: SignUpValues) => {
     setLoading(true);
     console.log('Values before submission:', values);
@@ -57,7 +57,7 @@ export default function Signup() {
         action: 'signup',
       });
       // console.log(result);
-      
+
       if (result?.error) {
         console.error('Error received from signIn:', result.error);
 
@@ -76,7 +76,7 @@ export default function Signup() {
           default:
             setError('An unexpected error occurred. Please try again later.');
         }
-      } else if (result?.ok && result?.error==null) {
+      } else if (result?.ok && result?.error == null) {
         setError(null); // Clear error if signup is successful
         router.push('/ui/login'); // Redirect to login
       } else {
@@ -91,14 +91,14 @@ export default function Signup() {
   };
 
   return (
-    <Container size={420} my={90} className="overflow-hidden">
+    <Container size={420} className="overflow-hidden mt-9">
       <Group justify="center" className="my-2">
-        <span className="w-10 h-10 rounded-full bg-gradient-to-r from-[#B68AFF] to-[#3E16B6]"></span>
+        <span className="w-11 h-11 rounded-full bg-gradient-to-r from-[#B68AFF] to-[#3E16B6]"></span>
       </Group>
-      <Text ta="center" fw={700} className="mt-1">
+      <Text ta="center" fw={600} className="mt-2 text-2xl text-[#1A1A1A]">
         Welcome to TripHub
       </Text>
-      <Text ta="center" c="dimmed">
+      <Text ta="center" fw={400} className="text-[#1A1A1A66] mb-9">
         Begin by creating a new account
       </Text>
       {error && (
@@ -107,13 +107,14 @@ export default function Signup() {
         </Text>
       )}
       <form onSubmit={form.onSubmit(handleSubmit)}>
-        <Paper shadow="md" p={30} mt={20} radius="md">
+        <Paper radius="md">
           <TextInput
             {...form.getInputProps('email')}
             label="Email"
             classNames={classes}
             mt="md"
             autoComplete="nope"
+            variant="filled"
             className={`${classes.input} ${
               form.values.email.trim() || form.isTouched('email') ? classes.floating : ''
             }`}
@@ -124,6 +125,7 @@ export default function Signup() {
             classNames={classes}
             mt="md"
             autoComplete="nope"
+            variant="filled"
             className={`${classes.input} ${
               form.values.username.trim() || form.isTouched('username') ? classes.floating : ''
             }`}
@@ -134,6 +136,7 @@ export default function Signup() {
             mt="md"
             classNames={classes}
             autoComplete="nope"
+            variant="filled"
             className={`${classes.input} ${
               form.values.password.trim() || form.isTouched('password') ? classes.floating : ''
             } ${classes.purpleBorder}`}
@@ -144,16 +147,22 @@ export default function Signup() {
             mt="sm"
             classNames={classes}
             autoComplete="nope"
+            variant="filled"
             className={`${classes.input} ${
               form.values.confirmPassword.trim() || form.isTouched('confirmPassword')
                 ? classes.floating
                 : ''
             } ${classes.purpleBorder}`}
           />
-          <Button fullWidth mt="xl" color="#7539d6" type="submit">
+          <Button
+            className="w-full sm:w-[357px] h-14 rounded-lg sm:ml-6 mt-8"
+            color="#7539d6"
+            type="submit"
+            loading={loading}
+          >
             Create new account
           </Button>
-          <Group justify="space-between">
+          <Group justify="space-between" className='mt-8 mb-1'>
             <Text c="dimmed" size="sm" ta="center" mt={5}>
               Already have an account?{' '}
             </Text>
